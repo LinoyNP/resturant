@@ -1,3 +1,6 @@
+
+//group 2- Shaindel Saimon, Chaya Misrachi, Linoy Nisim
+
 //Manasvi Goyal DTU
 
 #include <iostream>
