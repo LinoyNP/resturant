@@ -22,3 +22,11 @@ On entering as an Admin, the program first asks for the Admin User ID and Passwo
 On entering as a Staff, the program first asks for the Staff User ID and Password. Only the staff IDs added in the admin database and the admin can access this page. It also gives 3 attempts to enter the correct details after which the program is terminated. On successful login, a menu appears in which the staff can add new food items in the menu, see the food items in the menu along with their price and update the cost of the existing food items in the Food Menu.
 
 The new options of this restaurant Management System are:
+1) The customer will could choose between these menus:
+   * Menu with gluten-free foods for customers with celiac
+   * Menu with vegan foods
+   * Main menu
+   
+2) In the restaurant there is the option to present the recommended daily dished.
+
+3) In the restaurant will be able to lower prices with a coupon code.
