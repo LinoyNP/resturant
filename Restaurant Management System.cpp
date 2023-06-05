@@ -13,13 +13,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-enum {FREE_GLUTEN=1, VEGAN, REGULAR,EXIT};
-
-#include <string>
-#include <fstream>
-#include <vector>
-void displayDailyRecommendation();
-
+//shaindel code
 
 using namespace std;
 
