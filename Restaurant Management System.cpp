@@ -1,3 +1,6 @@
+
+//group 2- Shaine Simon, Chaya Misrachi, Linoy Nisim pur
+
 //Manasvi Goyal DTU
 
 #include <iostream>
@@ -11,6 +14,7 @@
 #include <unistd.h>
 
 //shaindel code
+
 using namespace std;
 
 class User;
@@ -28,7 +32,7 @@ class Menu
 {
     protected:
     int id;
-    char itemName[25];
+    char itemName[100];
     int rate;
     public:
         friend class Staff;
@@ -37,6 +41,7 @@ class Menu
         void showMenu();
         int getNewId();
         bool isDuplicateItem(char[]);
+        void choose_menu();
 };
 
 class Customer
@@ -107,6 +112,64 @@ class Staff : public AdminSubclass
         void viewFood();
         void editCost(Menu&);
 };
+
+void Menu:: choose_menu()//in this function the customer can choose between
+{
+    int choice;
+    cout<<"To view the menu with gluten free foods enter 1"<<endl
+        <<"To view a vegan menu enter 2"<<endl
+        <<"To the regular menu enter 3"<<endl
+        <<"To exit enter 4"<<endl;
+    cin>>choice;
+    switch (choice) {
+        case FREE_GLUTEN: {
+            Menu m;
+            FILE *fp;
+            fp = fopen("free_gluten_menu.txt", "r");
+            if (fp == NULL) {
+                {
+                    cout << "File(free_gluten_menu) cannot be opened!!\n";
+                }
+            } else {
+                while (!feof(fp)) {
+                    fread(&m, sizeof(Menu), 1, fp);
+                    cout <<"\t\t"<< m.id << "    " <<endl<<"\t\t"<< m.itemName << "\t\t" << m.rate << "\n";
+                }
+                fclose(fp);
+            }
+            break;
+        }
+        case VEGAN: {
+            Menu m;
+            FILE *fp;
+            fp = fopen("VeganMenu.txt", "r");
+            if (fp == NULL) {
+                cout << "File cannot be opened!!\n";
+            } else {
+                while (!feof(fp)) {
+                    fread(&m, sizeof(Menu), 1, fp);
+                    cout << m.id << "    " <<endl<< m.itemName << "\t\t" << m.rate << "\n";
+                }
+                fclose(fp);
+            }
+            break;
+        }
+        case REGULAR: {
+            Menu m;
+            m.showMenu();
+            break;
+        }
+        case EXIT: {
+            break;
+        }
+        default: {
+            cout << "Your choice no valid, choose again" << endl;
+            Menu m;
+            m.choose_menu();
+            break;
+        }
+    }
+}
 
 void Menu::readMenu()
 {
@@ -301,7 +364,7 @@ void AdminSubclass::adminMain(int i)
 void AdminSubclass::addStaff(User& u)
 {
     FILE *fp;
-    fp=fopen("UserFile.txt","a");
+    fp=fopen("UserFile.txt","ab");
     if(fp==NULL)
     {
         cout<<"File cannot be opened!!";
@@ -350,10 +413,11 @@ void AdminSubclass::showStaff(User& u)
 	else
 	{
 		cout<<"User Id:\tPassword:\n";
-		while(fread(&u,sizeof(User),1,fp)!=NULL)
-        {
+		//while(fread(&u,sizeof(User),1,fp)!= EOF)
+        //{
+        fread(&u,sizeof(User),1,fp);
 			cout<<u.uid<<"\t\t"<<u.password<<"\n";
-		}
+		//}
 		fclose(fp);
         cout<<"\nPress any key to continue... \n";
         getch();
@@ -426,7 +490,7 @@ void Staff::addFood()
 void Staff::viewFood()
 {
     Menu m;
-    m.showMenu();
+    m.choose_menu();
 	cout<<"Enter any key to continue...\n\n";
 	getch();
 	system("cls");
@@ -495,7 +559,7 @@ bool Admin::isValidateAdmin()
     int p=0;
     do
     {
-        userPass[p]=getch();
+        userPass[p]=(char)_getch();
         if(userPass[p]!='\r')
         {
             cout<<"*";
@@ -522,7 +586,7 @@ bool Admin::isValidateUser()
     int p=0;
     do
     {
-        userPass[p]=getch();
+        userPass[p]=(char)_getch();
         if(userPass[p]!='\r')
         {
             cout<<"*";
@@ -536,7 +600,7 @@ bool Admin::isValidateUser()
     {
         if((strcmp(userId,"admin")==0&&strcmp(userPass,"admin")==0))
         {
-            return 1;
+            return true;
         }
     }
     while(fread(&u,sizeof(User),1,fp))
@@ -639,14 +703,17 @@ void CustomerMain::customerPage()
 	cout<<"3. Show Bill \n";
 	cout<<"4. Pay bill and checkout \n";
     cout<<"5. Go to previous menu \n";
+    cout<<"6.Today's recommendation  \n";
 	d.printStar(40);
     cout<<"Enter your choice: ";
 	cin>>choice;
+    getchar();
     switch(choice)
     {
         case '1':
         {
-            m.showMenu();
+            m.choose_menu();
+            //m.showMenu();
             cout<<"\nPress any key to continue...\n\n";
             getch();
             customerPage();
@@ -682,6 +749,8 @@ void CustomerMain::customerPage()
             system("cls");
             d.welcome();
             break;
+        case '6':
+            displayDailyRecommendation();
         default:
         {
             cout<<"Enter valid option!\n";
@@ -708,7 +777,7 @@ void CustomerMain::orderFood()
         cin>>c.tableNumber;
     }
     cout<<"\n\n Today's Menu \n\n";
-    m.showMenu();
+    m.choose_menu();
     int i=0;
     do
     {
@@ -884,6 +953,7 @@ bool CustomerMain::isNotvalidTable(int a)
 		fclose(fp);
 		return result;
     }
+    return result;
 }
 
 
@@ -896,7 +966,7 @@ void Display::firstScreen()
     cout<<"\t\t\t\t\t\t Welcome to MG Restaurant \n";
     cout<<"\t\t\t\t******************************************************** \n";
     cout<<"\n\n\n\t\t\t\t\t\tPress any key to continue\n";
-    getch();
+    //_getch();
     system("cls");
 }
 
@@ -929,7 +999,7 @@ void Display::welcome()
     printStar(20);
     cout<<"Enter your choice: ";
     cin>>choice;
-
+    getchar();
     switch(choice)
     {
         case '1':
@@ -955,10 +1025,54 @@ void Display::welcome()
         }
     }
 }
+struct MenuItem {
+    int id;
+    std::string name;
+    float price;
+};
+
+void displayDailyRecommendation() {
+    ifstream menuFile("FoodMenu.txt");
+
+    if (!menuFile) {
+        cout << "Failed to open the menu file." << endl;
+        return;
+        // Read the menu file and store the items in a vector
+        vector<MenuItem> menuItems;
+        string line;
+        while (std::getline(menuFile, line)) {
+            if (!line.empty()) {
+                if (line.find("Item ID:") != string::npos) {
+                    MenuItem item;
+                    item.id = stoi(line.substr(line.find(":") + 1));
+                    getline(menuFile, line); // Read the next line for item name
+                    item.name = line.substr(line.find(":") + 1);
+                    getline(menuFile, line); // Read the next line for item price
+                    item.price = stof(line.substr(line.find(":") + 1));
+                    menuItems.push_back(item);
+                }
+            }
+        }
+
+        // Generate a random index to select a recommendation
+        srand(time(nullptr));
+        int randomIndex = rand() % menuItems.size();
+        MenuItem recommendation = menuItems[randomIndex];
+
+        cout << "Today's recommendation:" << endl;
+        cout << "Item ID: " << recommendation.id << endl;
+        cout << "Item Name: " << recommendation.name << endl;
+        cout << "Price: " << recommendation.price << endl;
+
+        menuFile.close();
+    }
+}
 
 int main()
 {
     string file_name = "FoodMenu.txt";
+    string file_gluten = "free_gluten_menu.txt";
+    string UserFile= "UserFile.txt";
     //Changing the permissions of the file
     /*int permissions = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
     int status = chmod(file_name.c_str(), permissions);
@@ -973,6 +1087,12 @@ int main()
         return 1;
     }*/
     if (_chmod("FoodMenu.txt" , _S_IREAD | _S_IWRITE ) == -1)
+        cout << "Error in changing the file permissions" << endl;
+    if (_chmod("free_gluten_menu.txt" , _S_IREAD | _S_IWRITE ) == -1)
+        cout << "Error in changing the file permissions" << endl;
+    if (_chmod("VeganMenu.txt" , _S_IREAD | _S_IWRITE ) == -1)
+        cout << "Error in changing the file permissions" << endl;
+    if (_chmod("UserFile.txt" , _S_IREAD | _S_IWRITE ) == -1)
         cout << "Error in changing the file permissions" << endl;
     Display d;
 	d.firstScreen();

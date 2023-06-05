@@ -1,0 +1,16 @@
+Item ID:301
+Item Name:Classic vegan burger with lettuce, tomato, onion, pickles, and vegan cheese
+Price:12$
+
+Item ID:302
+Item Name:BBQ mushroom and onion vegan burger with lettuce and vegan mayo
+Price:10$
+
+Item ID:303
+Item Name:Spicy black bean and quinoa vegan burger with avocado
+Price:10$
+
+Freshly squeezed lemonade-4$
+Iced tea-3$
+Craft beer (vegan options available)-7$
+Red and white wine (vegan options available)-10$
